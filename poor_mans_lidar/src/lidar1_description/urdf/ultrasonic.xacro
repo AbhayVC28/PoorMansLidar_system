@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot name="my_lidar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:property name="sensor_length" value="0.02"/>
+<xacro:property name="sensor_width" value="0.045"/>
+<xacro:property name="sensor_height" value="0.015"/>
+
+<link name="ultrasonic">
+    <visual>
+        <geometry>
+            <box size="${sensor_length} ${sensor_width} ${sensor_height}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 ${pi/2.0}"/>
+        <material name="orange" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${sensor_length} ${sensor_width} ${sensor_height}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 ${pi/2.0}"/>
+    </collision>
+
+    <xacro:box_inertia m="0.01" x="${sensor_length}" y="${sensor_width}" z="${sensor_height}" o_xyz="0 0 0" o_rpy="0 0 ${pi/2.0}" />
+    
+</link>
+
+<joint name="Sensor_sholder_joint" type="fixed">
+    <parent link="sholder_link"/>
+    <child link="ultrasonic"/>
+    <origin xyz="0 ${(sensor_length/2.0)+(sholder_width/2.0)} ${sholder_height/2.0}" rpy="0 0 0"/>
+    
+</joint>
+
+</robot>

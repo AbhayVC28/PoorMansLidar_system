@@ -1,0 +1,9 @@
+cat << 'EOF' > ~/Desktop/poor_mans_lidar/.gitignore
+build/
+install/
+log/
+.vscode/
+.idea/
+*.pyc
+__pycache__/
+EOF

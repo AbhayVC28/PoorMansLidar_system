@@ -1,0 +1,21 @@
+<launch>
+    <!-- Package Paths -->
+    <let name="urdf_path" value="$(find-pkg-share lidar1_description)/urdf/robot.urdf.xacro" />
+    <let name="rviz_config_path" value="$(find-pkg-share lidar1_description)/rviz/urdf_config.rviz" />
+
+    <!-- 1. Micro-ROS Agent Node -->
+    <node pkg="micro_ros_agent" exec="micro_ros_agent" name="micro_ros_agent" output="screen"
+          args="serial --dev /dev/ttyUSB0 -b 115200" />
+
+    <!-- 2. Joint Controller Node -->
+    <node pkg="one_two_py" exec="joint_controller" name="joint_controller" output="screen" />
+
+    <!-- 3. Robot State Publisher -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
+        <param name="robot_description" value="$(command 'xacro $(var urdf_path)')" />
+    </node>
+
+
+    <!-- 5. RViz2 Visualization -->
+    <node pkg="rviz2" exec="rviz2" output="screen" args="-d $(var rviz_config_path)" />
+</launch>

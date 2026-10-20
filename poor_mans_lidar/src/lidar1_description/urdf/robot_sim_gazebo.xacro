@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:property name="base_radius" value="0.1" />
+<xacro:property name="base_length" value="0.01" />
+<xacro:property name="sholder_height" value="0.06" />
+<xacro:property name="sholder_length" value="0.035" />
+<xacro:property name="sholder_width" value="0.02" />
+
+<link name="base_footprint">
+    </link>
+    
+
+<link name="base_link">
+    <visual>
+        <geometry>
+            <cylinder radius="${base_radius}" length="${base_length}" />
+        </geometry>
+        <origin xyz="0 0 ${base_length/2.0}" rpy="0 0 0" />
+        <material name="green" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <cylinder radius="${base_radius}" length="${base_length}"/>
+        </geometry>
+        <origin xyz="0 0 ${base_length/2.0}" rpy="0 0 0"/>
+    </collision>
+
+    <xacro:cylinderical_inertia m="5" r="${base_radius}" l="${base_length}" o_xyz="0 0 ${base_length}" o_rpy="0 0 0"/>
+</link>
+
+<link name="sholder_link">
+    <visual>
+        <geometry>
+            <box size="${sholder_length} ${sholder_width} ${sholder_height}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="blue"/>
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${sholder_length} ${sholder_width} ${sholder_height}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <xacro:box_inertia m="0.015" x="${sholder_length}" y="${sholder_width}" z="${sholder_height}" o_xyz="0 0 0" o_rpy="0 0 0"/>
+    
+</link>
+
+<joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+
+<joint name="base_sholder_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="sholder_link"/>
+    <origin xyz="0 0 ${(sholder_height/2.0) + base_length}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="${2*pi}" effort="100" velocity="100"/>
+    <dynamics damping="0.3" friction="0.3"/>
+</joint>
+
+
+</robot>

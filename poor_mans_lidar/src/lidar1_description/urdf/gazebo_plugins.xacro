@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="my_lidar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<gazebo reference="ultrasonic">
+    <sensor type="gpu_ray" name="ultrasonic_sensor">
+        <pose>0 0 0 0 0 ${pi/2.0}</pose>
+        <visualize>true</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>5</samples>
+                    <resolution>1</resolution>
+                    <min_angle>0</min_angle>
+                    <max_angle>0</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.02</min>
+                <max>4.0</max>
+                <resolution>0.01</resolution>
+            </range>
+        </ray>
+        <gz_frame_id>ultrasonic</gz_frame_id>
+    </sensor>
+</gazebo>
+
+    <gazebo>
+        <plugin filename="libignition-gazebo-joint-state-publisher-system.so" 
+                name="ignition::gazebo::systems::JointStatePublisher">
+            <joint_name>base_sholder_joint</joint_name> 
+        </plugin>
+    </gazebo>
+
+    
+<gazebo>
+    <plugin filename="libignition-gazebo-joint-position-controller-system.so" 
+            name="ignition::gazebo::systems::JointPositionController">
+        <joint_name>base_sholder_joint</joint_name>
+        <topic>joint_cmd_pos</topic> <!-- Forces a clean, direct topic name -->
+        <initial_position>0.0</initial_position>
+        <p_gain>200.0</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.05</d_gain>
+        <i_max>100.0</i_max>
+        <i_min>-100.0</i_min>
+    </plugin>
+</gazebo>
+
+</robot>

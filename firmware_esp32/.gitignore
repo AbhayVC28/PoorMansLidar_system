@@ -1,0 +1,5 @@
+cat << 'EOF' > ~/Documents/PlatformIO/Projects/Project_1/.gitignore
+.pio/
+.vscode/
+.clangd/
+EOF
